@@ -1,5 +1,6 @@
 package com.daniel.photoclone.service;
 
+import com.daniel.photoclone.exception.PhotoNotFoundException;
 import com.daniel.photoclone.model.Photo;
 import com.daniel.photoclone.repository.PhotoRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,13 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-
-// Move exception outside as standalone class
-class PhotoNotFoundException extends RuntimeException {
-    public PhotoNotFoundException(String message) {
-        super(message);
-    }
-}
 
 @Service
 @RequiredArgsConstructor

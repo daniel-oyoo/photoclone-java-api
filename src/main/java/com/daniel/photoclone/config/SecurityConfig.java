@@ -24,13 +24,18 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
+                .requestMatchers("**"
+                    /* 
                     "/api/users/register",
                     "/h2-console/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html",
                     "/v3/api-docs/**",
-                    "/v3/api-docs.yaml"
+                    "/v3/api-docs.yaml",
+                    "jdbc:h2:mem:photodb",
+                    "http://localhost:8080/swagger-ui/index.html",
+                    "http://localhost:8080/h2-console"
+                    */
                 ).permitAll()
                 .anyRequest().authenticated()
             )

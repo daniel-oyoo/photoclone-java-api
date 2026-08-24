@@ -1,7 +1,7 @@
 package com.daniel.photoclone.controller;
 
 import com.daniel.photoclone.model.Photo;
-import com.daniel.photoclone.service.PhotoNotFoundException;
+import com.daniel.photoclone.exception.*;
 import com.daniel.photoclone.service.PhotoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,6 +21,7 @@ import java.util.Map;
 @RequestMapping("/api/photos")
 @RequiredArgsConstructor
 @Tag(name = "Photo Management", description = "Upload, view, update, and delete photos")
+@CrossOrigin
 public class PhotoController {
 
     private final PhotoService photoService;
@@ -28,7 +29,7 @@ public class PhotoController {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Upload a photo", description = "Upload an image file with description and tags")
     public ResponseEntity<?> uploadPhoto(
-            @Parameter(description = "Image file (JPEG, PNG, etc)") 
+            @Parameter(description = "Image file (JPEG, PNG,JPG)") 
             @RequestParam("file") MultipartFile file,
             
             @Parameter(description = "Photo description")

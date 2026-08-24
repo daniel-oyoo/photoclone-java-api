@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    |<img id="testImage" src="">
+    <script>
+        async function test() {
+            let imageList = [];
+            for (let i = 45; i < 55; i++) {
+                try {
+                    const res = await fetch(`http://localhost:8080/api/photos/${i}/image`);
+                    const img = await res.blob();
+                    imageList.push(`http://localhost:8080/api/photos/${i}/image`);
+                } catch (error) {
+                    console.log(error);
+                    continue;
+                }
+            }
+
+            for (let i = 0; i < imageList.length; i++) {
+                setTimeout(200);
+                document.querySelector("img").src = imageList[i];
+            }
+
+            document.querySelector("body").background =
+                "http://localhost:8080/api/photos/10/image";
+        }
+
+        test();
+    </script>
+</body>
+
+</html>
