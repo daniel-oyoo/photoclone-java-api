@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 import java.util.Set;
 
@@ -26,6 +27,7 @@ import java.util.Set;
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@ConditionalOnProperty(name = "photoclone.seed-data", havingValue = "true")
 public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
@@ -33,7 +35,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        log.info("=== Starting Data Initialization ===");
+        log.info("=== Starting optional data initialization ===");
         
         // Only create test data if no users exist
         if (userRepository.count() == 0) {
@@ -43,7 +45,6 @@ public class DataInitializer implements CommandLineRunner {
         }
         
         log.info("=== Data Initialization Complete ===");
-        printApplicationInfo();
     }
 
     /**
@@ -60,7 +61,7 @@ public class DataInitializer implements CommandLineRunner {
         admin.setFullName("Administrator");
         admin.setRoles(Set.of("USER", "ADMIN"));
         userRepository.save(admin);
-        log.info("Created admin user: admin/admin123");
+        log.info("Created admin user");
         
         // Create REGULAR user
         User user = new User();
@@ -70,7 +71,7 @@ public class DataInitializer implements CommandLineRunner {
         user.setFullName("Regular User");
         user.setRoles(Set.of("USER"));
         userRepository.save(user);
-        log.info("Created regular user: user/user123");
+        log.info("Created regular user");
         
         // Create TEST user
         User test = new User();
@@ -80,34 +81,9 @@ public class DataInitializer implements CommandLineRunner {
         test.setFullName("Test User");
         test.setRoles(Set.of("USER"));
         userRepository.save(test);
-        log.info("Created test user: test/test123");
+        log.info("Created test user");
         
         log.info("Total users created: {}", userRepository.count());
     }
 
-    /**
-     * PRINT APPLICATION INFO
-     */
-    private void printApplicationInfo() {
-        System.out.println("\n" + "=".repeat(50));
-        System.out.println(" PHOTOCLONE APPLICATION READY!");
-        System.out.println("=".repeat(50));
-        System.out.println("\n TEST CREDENTIALS:");
-        System.out.println("    admin / admin123 (ADMIN role)");
-        System.out.println("    user / user123 (USER role)");
-        System.out.println("    test / test123 (USER role)");
-        System.out.println("\n ACCESS POINTS:");
-        System.out.println("    Application: http://localhost:8080");
-        System.out.println("    H2 Console: http://localhost:8080/h2-console");
-        System.out.println("    JDBC URL: jdbc:h2:mem:photodb");
-        System.out.println("    Username: sa (no password)");
-        System.out.println("\n API ENDPOINTS:");
-        System.out.println("    POST   /api/users/register");
-        System.out.println("    POST   /api/photos/upload");
-        System.out.println("    GET    /api/photos");
-        System.out.println("    GET    /api/photos/{id}");
-        System.out.println("    PUT    /api/photos/{id}");
-        System.out.println("    DELETE /api/photos/{id}");
-        System.out.println("=".repeat(50) + "\n");
-    }
 }
